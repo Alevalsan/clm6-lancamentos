@@ -127,13 +127,14 @@
       background: #222;
       padding: 8px;
       border-bottom: 2px solid #555;
-      border-right: 2px solid rgba(255,255,255);
+      border-right: 1px solid rgba(255,255,255);
     }
 
     tbody td {
       padding: 6px 4px;
       text-align: center;
       border-bottom: 1px solid #222;
+      border-right: 1px solid rgba(255,255,255)
     }
 
     .row-current {
@@ -161,26 +162,6 @@
       margin-top: 6px;
       font-size: 14px;
       color: #ccc;
-    }
-
-        /* Bordas finas verticais entre as colunas da tabela */
-    table.data-table td, 
-    table.data-table th {
-        border-right: 2px solid rgba(255,255,255);
-    }
-    
-    /* Remove borda da última coluna para ficar visual limpo */
-    table.data-table td:last-child, 
-    table.data-table th:last-child {
-        border-right: none;
-    }
-    
-    /* Linha acumulada também alinhada com as colunas */
-    .accum-row td {
-        border-right: 2px solid rgba(255,255,255) !important;
-    }
-    .accum-row td:last-child {
-        border-right: none !important;
     }
   </style>
 </head>
@@ -495,6 +476,7 @@
   </script>
 </body>
 </html>
+
 
 
 
