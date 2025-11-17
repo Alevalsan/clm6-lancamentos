@@ -161,6 +161,26 @@
       font-size: 14px;
       color: #ccc;
     }
+
+        /* Bordas finas verticais entre as colunas da tabela */
+    table.data-table td, 
+    table.data-table th {
+        border-right: 1px solid rgba(255,255,255,0.15);
+    }
+    
+    /* Remove borda da última coluna para ficar visual limpo */
+    table.data-table td:last-child, 
+    table.data-table th:last-child {
+        border-right: none;
+    }
+    
+    /* Linha acumulada também alinhada com as colunas */
+    .accum-row td {
+        border-right: 1px solid rgba(255,255,255,0.20) !important;
+    }
+    .accum-row td:last-child {
+        border-right: none !important;
+    }
   </style>
 </head>
 <body>
@@ -474,4 +494,5 @@
   </script>
 </body>
 </html>
+
 
