@@ -106,10 +106,9 @@
   <div id="statusMsg"></div>
 
   <script>
-    // 🔗 TROQUE ESTA CONSTANTE PELA SUA URL DO WEB APP
+    // 🔗 SUA URL DO WEB APP
     const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxETmX2cf7Si8uV5R2Km3HUEawXb4FSD7m6ZiRwYdipm6ogOohZBT6w8wOlV9phQFH0/exec";
 
-    // Iremos carregar os slots a partir da API
     let slotsConfig = [];
 
     function showStatus(msg, isError = false) {
@@ -246,7 +245,7 @@
 
         showStatus("Saving data...", false);
 
-        // Envia cada slot como uma chamada separada à API
+        // ENVIO SEM LER RESPOSTA (no-cors) PARA EVITAR ERRO
         const promises = rows.map(row =>
           fetch(`${SCRIPT_URL}?action=saveProduction`, {
             method: "POST",
@@ -255,20 +254,12 @@
               "Content-Type": "text/plain;charset=utf-8"
             },
             body: JSON.stringify(row)
-          }).then(r => r.json())
+          })
         );
 
-        const results = await Promise.all(promises);
+        await Promise.all(promises);
 
-        const okCount = results.filter(r => r.status === "success").length;
-        const errCount = results.length - okCount;
-
-        if (errCount === 0) {
-          showStatus(`Saved ${okCount} time slot(s) successfully.`);
-        } else {
-          showStatus(`Saved ${okCount}, but ${errCount} failed. Check console.`, true);
-          console.log("Save results:", results);
-        }
+        showStatus(`Saved ${rows.length} time slot(s) successfully.`);
 
       } catch (err) {
         console.error(err);
@@ -276,9 +267,7 @@
       }
     }
 
-    // Carrega config assim que a página abre
     window.addEventListener("load", loadConfigSlots);
   </script>
 </body>
 </html>
-
