@@ -106,7 +106,7 @@
   <div id="statusMsg"></div>
 
   <script>
-    // 🔗 SUA URL DO WEB APP
+    // 🔗 SUA URL DO WEB APP (já funcionando)
     const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxETmX2cf7Si8uV5R2Km3HUEawXb4FSD7m6ZiRwYdipm6ogOohZBT6w8wOlV9phQFH0/exec";
 
     let slotsConfig = [];
@@ -179,7 +179,7 @@
         btnRow.type = "button";
         btnRow.className = "btn-row";
         btnRow.textContent = "Clear row";
-        btnRow.onclick = () => clearRowInputs(slot.id_slot);
+        btnRow.onclick = () => clearRowInputs(slot.id_slot, true);
         tdAction.appendChild(btnRow);
         tr.appendChild(tdAction);
 
@@ -187,12 +187,18 @@
       });
     }
 
-    function clearRowInputs(slotId) {
+    function clearRowInputs(slotId, showMsg) {
       ["line1", "line2", "line3", "line4"].forEach(lineKey => {
         const inp = document.getElementById(`${slotId}_${lineKey}`);
         if (inp) inp.value = "";
       });
-      showStatus(`Inputs for ${slotId} cleared (note: saved data in DB is not erased).`);
+      if (showMsg) {
+        showStatus(`Inputs for ${slotId} cleared (note: saved data in DB is not erased).`);
+      }
+    }
+
+    function clearAllInputs() {
+      slotsConfig.forEach(slot => clearRowInputs(slot.id_slot, false));
     }
 
     function collectRowsFromInputs() {
@@ -245,7 +251,6 @@
 
         showStatus("Saving data...", false);
 
-        // ENVIO SEM LER RESPOSTA (no-cors) PARA EVITAR ERRO
         const promises = rows.map(row =>
           fetch(`${SCRIPT_URL}?action=saveProduction`, {
             method: "POST",
@@ -258,6 +263,9 @@
         );
 
         await Promise.all(promises);
+
+        // limpa inputs após salvar
+        clearAllInputs();
 
         showStatus(`Saved ${rows.length} time slot(s) successfully.`);
 
